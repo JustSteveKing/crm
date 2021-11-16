@@ -16175,6 +16175,270 @@
      
 }
 
+    namespace Stancl\Tenancy\Facades { 
+            /**
+     * 
+     *
+     */ 
+        class Tenancy {
+                    /**
+         * Initializes the tenant.
+         *
+         * @param \Stancl\Tenancy\Contracts\Tenant|int|string $tenant
+         * @return void 
+         * @static 
+         */ 
+        public static function initialize($tenant)
+        {
+                        /** @var \Stancl\Tenancy\Tenancy $instance */
+                        $instance->initialize($tenant);
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function end()
+        {
+                        /** @var \Stancl\Tenancy\Tenancy $instance */
+                        return $instance->end();
+        }
+                    /**
+         * 
+         *
+         * @return \Stancl\Tenancy\Contracts\TenancyBootstrapper[] 
+         * @static 
+         */ 
+        public static function getBootstrappers()
+        {
+                        /** @var \Stancl\Tenancy\Tenancy $instance */
+                        return $instance->getBootstrappers();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function query()
+        {
+                        /** @var \Stancl\Tenancy\Tenancy $instance */
+                        return $instance->query();
+        }
+                    /**
+         * 
+         *
+         * @return \Stancl\Tenancy\Contracts\Tenant|\Illuminate\Database\Eloquent\Model 
+         * @static 
+         */ 
+        public static function model()
+        {
+                        /** @var \Stancl\Tenancy\Tenancy $instance */
+                        return $instance->model();
+        }
+                    /**
+         * 
+         *
+         * @static 
+         */ 
+        public static function find($id)
+        {
+                        /** @var \Stancl\Tenancy\Tenancy $instance */
+                        return $instance->find($id);
+        }
+                    /**
+         * Run a callback in the central context.
+         * 
+         * Atomic, safely reverts to previous context.
+         *
+         * @param callable $callback
+         * @return mixed 
+         * @static 
+         */ 
+        public static function central($callback)
+        {
+                        /** @var \Stancl\Tenancy\Tenancy $instance */
+                        return $instance->central($callback);
+        }
+                    /**
+         * Run a callback for multiple tenants.
+         * 
+         * More performant than running $tenant->run() one by one.
+         *
+         * @param \Stancl\Tenancy\Contracts\Tenant[]|\Traversable|string[]|null $tenants
+         * @param callable $callback
+         * @return void 
+         * @static 
+         */ 
+        public static function runForMultiple($tenants, $callback)
+        {
+                        /** @var \Stancl\Tenancy\Tenancy $instance */
+                        $instance->runForMultiple($tenants, $callback);
+        }
+                    /**
+         * Register a custom macro.
+         *
+         * @param string $name
+         * @param object|callable $macro
+         * @return void 
+         * @static 
+         */ 
+        public static function macro($name, $macro)
+        {
+                        \Stancl\Tenancy\Tenancy::macro($name, $macro);
+        }
+                    /**
+         * Mix another object into the class.
+         *
+         * @param object $mixin
+         * @param bool $replace
+         * @return void 
+         * @throws \ReflectionException
+         * @static 
+         */ 
+        public static function mixin($mixin, $replace = true)
+        {
+                        \Stancl\Tenancy\Tenancy::mixin($mixin, $replace);
+        }
+                    /**
+         * Checks if macro is registered.
+         *
+         * @param string $name
+         * @return bool 
+         * @static 
+         */ 
+        public static function hasMacro($name)
+        {
+                        return \Stancl\Tenancy\Tenancy::hasMacro($name);
+        }
+                    /**
+         * Flush the existing macros.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function flushMacros()
+        {
+                        \Stancl\Tenancy\Tenancy::flushMacros();
+        }
+         
+    }
+            /**
+     * 
+     *
+     */ 
+        class GlobalCache {
+                    /**
+         * Get a cache store instance by name, wrapped in a repository.
+         *
+         * @param string|null $name
+         * @return \Illuminate\Contracts\Cache\Repository 
+         * @static 
+         */ 
+        public static function store($name = null)
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        return $instance->store($name);
+        }
+                    /**
+         * Get a cache driver instance.
+         *
+         * @param string|null $driver
+         * @return \Illuminate\Contracts\Cache\Repository 
+         * @static 
+         */ 
+        public static function driver($driver = null)
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        return $instance->driver($driver);
+        }
+                    /**
+         * Create a new cache repository with the given implementation.
+         *
+         * @param \Illuminate\Contracts\Cache\Store $store
+         * @return \Illuminate\Cache\Repository 
+         * @static 
+         */ 
+        public static function repository($store)
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        return $instance->repository($store);
+        }
+                    /**
+         * Re-set the event dispatcher on all resolved cache repositories.
+         *
+         * @return void 
+         * @static 
+         */ 
+        public static function refreshEventDispatcher()
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        $instance->refreshEventDispatcher();
+        }
+                    /**
+         * Get the default cache driver name.
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getDefaultDriver()
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        return $instance->getDefaultDriver();
+        }
+                    /**
+         * Set the default cache driver name.
+         *
+         * @param string $name
+         * @return void 
+         * @static 
+         */ 
+        public static function setDefaultDriver($name)
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        $instance->setDefaultDriver($name);
+        }
+                    /**
+         * Unset the given driver instances.
+         *
+         * @param array|string|null $name
+         * @return \Illuminate\Cache\CacheManager 
+         * @static 
+         */ 
+        public static function forgetDriver($name = null)
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        return $instance->forgetDriver($name);
+        }
+                    /**
+         * Disconnect the given driver and remove from local cache.
+         *
+         * @param string|null $name
+         * @return void 
+         * @static 
+         */ 
+        public static function purge($name = null)
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        $instance->purge($name);
+        }
+                    /**
+         * Register a custom driver creator Closure.
+         *
+         * @param string $driver
+         * @param \Closure $callback
+         * @return \Illuminate\Cache\CacheManager 
+         * @static 
+         */ 
+        public static function extend($driver, $callback)
+        {
+                        /** @var \Illuminate\Cache\CacheManager $instance */
+                        return $instance->extend($driver, $callback);
+        }
+         
+    }
+     
+}
+
     namespace Illuminate\Http { 
             /**
      * 
@@ -19666,6 +19930,8 @@ namespace  {
             class Validator extends \Illuminate\Support\Facades\Validator {}
             class View extends \Illuminate\Support\Facades\View {}
             class Flare extends \Facade\Ignition\Facades\Flare {}
+            class Tenancy extends \Stancl\Tenancy\Facades\Tenancy {}
+            class GlobalCache extends \Stancl\Tenancy\Facades\GlobalCache {}
      
 }
 
