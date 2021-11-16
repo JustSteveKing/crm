@@ -9,6 +9,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use RuntimeException;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -25,13 +26,33 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->group(base_path('routes/api.php'));
+            foreach ($this->centralDomains() as $domain) {
+                Route::prefix('api')
+                    ->domain($domain)
+                    ->middleware('api')
+                    ->group(base_path('routes/api.php'));
 
-            Route::middleware('web')
-                ->group(base_path('routes/web.php'));
+                Route::middleware('web')
+                    ->domain($domain)
+                    ->group(base_path('routes/web.php'));
+            }
         });
+    }
+
+    /**
+     * @return array
+     */
+    protected function centralDomains(): array
+    {
+        $domains = config('tenancy.central_domains');
+
+        if (! is_array($domains)) {
+            throw new RuntimeException(
+                message: "Tenanct Central Domains should be an array",
+            );
+        }
+
+        return (array) $domains;
     }
 
     /**

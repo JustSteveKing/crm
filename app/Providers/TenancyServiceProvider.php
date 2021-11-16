@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Illuminate\Foundation\Http\Kernel;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -12,13 +13,17 @@ use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
 use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
+use Throwable;
 
 class TenancyServiceProvider extends ServiceProvider
 {
     // By default, no namespace is used to support the callable array syntax.
     public static string $controllerNamespace = '';
 
-    public function events()
+    /**
+     * @return array
+     */
+    public function events(): array
     {
         return [
             // Tenant events
@@ -92,12 +97,18 @@ class TenancyServiceProvider extends ServiceProvider
         ];
     }
 
-    public function register()
+    /**
+     * @return void
+     */
+    public function register(): void
     {
         //
     }
 
-    public function boot()
+    /**
+     * @return void
+     */
+    public function boot(): void
     {
         $this->bootEvents();
         $this->mapRoutes();
@@ -105,7 +116,10 @@ class TenancyServiceProvider extends ServiceProvider
         $this->makeTenancyMiddlewareHighestPriority();
     }
 
-    protected function bootEvents()
+    /**
+     * @return void
+     */
+    protected function bootEvents(): void
     {
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {
@@ -118,7 +132,10 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
-    protected function mapRoutes()
+    /**
+     * @return void
+     */
+    protected function mapRoutes(): void
     {
         if (file_exists(base_path('routes/tenant.php'))) {
             Route::namespace(static::$controllerNamespace)
@@ -126,7 +143,11 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
-    protected function makeTenancyMiddlewareHighestPriority()
+    /**
+     * @throws Throwable
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
+     */
+    protected function makeTenancyMiddlewareHighestPriority(): void
     {
         $tenancyMiddleware = [
             // Even higher priority than the initialization middleware
@@ -140,7 +161,14 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            try {
+                /** @var Kernel $kernel */
+                $kernel = $this->app->make(Kernel::class);
+            } catch(Throwable $exception) {
+                throw $exception;
+            }
+
+            $kernel->prependMiddleware($middleware);
         }
     }
 }
