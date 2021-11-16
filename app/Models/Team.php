@@ -14,6 +14,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Team newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Team query()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Query\Builder|Team onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Team withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Team withoutTrashed()
  */
 class Team extends Model
 {

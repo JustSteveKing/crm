@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Contact newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Contact query()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Query\Builder|Contact onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Contact withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Contact withoutTrashed()
  */
 class Contact extends Model
 {

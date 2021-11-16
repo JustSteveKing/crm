@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Department newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Department query()
  * @mixin \Eloquent
+ * @method static \Illuminate\Database\Query\Builder|Department onlyTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Department withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|Department withoutTrashed()
  */
 class Department extends Model
 {
