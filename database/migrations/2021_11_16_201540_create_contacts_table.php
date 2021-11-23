@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('preferred_name');
             $table->string('email')->unique();
             $table->string('phone');
+            $table->string('pronouns');
 
             $table->timestamps();
             $table->softDeletes();

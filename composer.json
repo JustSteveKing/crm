@@ -12,7 +12,10 @@
         "laravel/framework": "^8.65",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
-        "stancl/tenancy": "^3.4"
+        "spatie/laravel-enum": "^2.5",
+        "spatie/laravel-query-builder": "^4.0",
+        "stancl/tenancy": "^3.4",
+        "timacdonald/json-api": "^0.1.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.10",

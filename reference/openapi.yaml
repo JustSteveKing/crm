@@ -1,0 +1,168 @@
+openapi: 3.1.0
+info:
+  title: Laravel CRM API
+  version: '1.0'
+servers:
+  - url: 'http://localhost:3000/api/v1'
+paths:
+  /contacts:
+    parameters: []
+    get:
+      summary: Get a List of Contacts
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/CollectionWrapper'
+                  - properties:
+                      data:
+                        items:
+                          properties:
+                            attributes:
+                              $ref: '#/components/schemas/Contact'
+              examples: {}
+          headers:
+            Cache-Control:
+              schema:
+                type: string
+              description: 'This describes the length of time this will be cached for, this may change closer to a new deployment.'
+        '404':
+          description: User Not Found
+      operationId: get-contacts-index
+      description: 'A list of Contact Objects that you have stored on your account, this will be scoped to the Account that owns your Access Token.'
+      security:
+        - API-Key: []
+    post:
+      summary: Create a New Contact
+      operationId: post-contacts-create
+      responses:
+        '202':
+          description: Accepted
+        '403':
+          description: Forbidden
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorNotFound'
+              examples:
+                Example:
+                  value:
+                    title: Not Found
+                    detail: string
+                    status: string
+                    code: string
+        '422':
+          description: Unprocessable Entity
+          content:
+            application/problem+json:
+              schema:
+                type: object
+                properties: {}
+      description: 'When adding a new point of contact on a Project, or when dealing with a new lead - create a new Contact to attach information to. This will be an async request, so this new contact will be created in the background - allow up to 3 minutes for this to take effect.'
+      security:
+        - API-Key: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Contact'
+components:
+  schemas:
+    Contact:
+      title: Contact
+      properties:
+        title:
+          type: string
+        name:
+          type: object
+          required:
+            - first
+            - full
+          properties:
+            first:
+              type: string
+            middle:
+              type: string
+            last:
+              type: string
+            prefered:
+              type: string
+            full:
+              type: string
+              readOnly: true
+        phone:
+          type: string
+        email:
+          type: string
+    ItemWrapper:
+      title: ItemWrapper
+      type: object
+      examples: []
+      properties:
+        id:
+          type: string
+          description: Unique identifier.
+          format: uuid
+          readOnly: true
+        type:
+          type: string
+          readOnly: true
+        attributes:
+          type: object
+        _links:
+          type: object
+          required:
+            - _parent
+            - _self
+          properties:
+            _parent:
+              type: string
+            _self:
+              type: string
+      required:
+        - id
+        - type
+        - attributes
+        - _links
+    CollectionWrapper:
+      title: CollectionWrapper
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemWrapper'
+    ErrorGeneric:
+      title: ErrorGeneric
+      type: object
+      description: ''
+      properties:
+        title:
+          type: string
+        detail:
+          type: string
+        status:
+          type: string
+        code:
+          type: string
+      required:
+        - title
+        - detail
+        - status
+        - code
+    ErrorNotFound:
+      allOf:
+        - $ref: '#/components/schemas/ErrorGeneric'
+        - type: object
+          properties:
+            title:
+              default: Not Found
+              type: string
+  securitySchemes:
+    API-Key:
+      type: http
+      scheme: bearer

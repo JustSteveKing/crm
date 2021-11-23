@@ -31,10 +31,11 @@ class RouteServiceProvider extends ServiceProvider
             foreach ($this->centralDomains() as $domain) {
                 Route::prefix('api')
                     ->domain($domain)
+                    ->as('api:')
                     ->middleware([
                         'api',
-                        InitializeTenancyByDomain::class,
-                        PreventAccessFromCentralDomains::class,
+//                        InitializeTenancyByDomain::class,
+//                        PreventAccessFromCentralDomains::class,
                     ])->group(base_path('routes/api.php'));
 
                 Route::middleware('web')

@@ -11,6 +11,8 @@ parameters:
     level: 9
 
     excludePaths:
+        - app/Models/Concerns/HasUuid.php
+        - app/Http/Resources/Api/ContactResource.php
 
     checkMissingIterableValueType: false
 
