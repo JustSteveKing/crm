@@ -11,7 +11,7 @@ use JustSteveKing\StatusCode\Http;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 
-it('gets an Unauthorized response when not logged in on the index route', function () {
+it('received a 401 on index when not logged in', function () {
     getJson(
         uri: route('api:contacts:index'),
     )->assertStatus(
@@ -35,6 +35,27 @@ it('it can retrieve a list of contacts for a user', function () {
             ),
     );
 });
+
+it('receives a 401 on create when not logged in', function (string $string) {
+    postJson(
+        uri: route('api:contacts:store'),
+        data: [
+            'title' => $string,
+            'name' => [
+                'first' => $string,
+                'middle' => $string,
+                'last' => $string,
+                'preferred' => $string,
+                'full' => "$string $string $string",
+            ],
+            'phone' => $string,
+            'email' => "{$string}@email.com",
+            'pronouns' => Pronouns::random(),
+        ],
+    )->assertStatus(
+        status: Http::UNAUTHORIZED,
+    );
+})->with('strings');
 
 it('can create a new contact', function (string $string) {
     auth()->login(User::factory()->create());
