@@ -16,13 +16,13 @@ return new class extends Migration
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid')->unique();
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->string('first_name');
-            $table->string('middle_name');
-            $table->string('last_name');
-            $table->string('preferred_name');
-            $table->string('email')->unique();
-            $table->string('phone');
+            $table->string('middle_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('preferred_name')->nullable();
+            $table->string('email')->unique()->nullable();
+            $table->string('phone')->nullable();
             $table->string('pronouns');
 
             $table->timestamps();
