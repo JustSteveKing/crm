@@ -65,7 +65,7 @@ class StoreRequest extends FormRequest
             ],
             'email' => [
                 'nullable',
-                'email:rfc,dns',
+                'email:rfc',
             ],
             'pronouns' => [
                 'required',

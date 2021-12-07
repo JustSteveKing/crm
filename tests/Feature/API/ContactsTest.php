@@ -10,6 +10,7 @@ use JustSteveKing\StatusCode\Http;
 
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
+use function Pest\Laravel\putJson;
 
 it('receives a 401 on index when not logged in', function () {
     getJson(
@@ -72,7 +73,7 @@ it('can create a new contact', function (string $string) {
                 'full' => "$string $string $string",
             ],
             'phone' => $string,
-            'email' => "{$string}@email.com",
+            'email' => "{$string}@gmail.com",
             'pronouns' => Pronouns::random(),
         ],
     )->assertStatus(
@@ -124,4 +125,35 @@ it('receives a 404 on show with incorrect UUID', function (string $string) {
     )->assertStatus(
         status: Http::NOT_FOUND,
     );
+})->with('strings');
+
+it('can update a contact', function (string $string) {
+    auth()->login(User::factory()->create());
+
+    $contact = Contact::factory()->create();
+
+    expect(
+        putJson(
+            uri: route('api:contacts:update', $contact->uuid),
+            data: [
+                'title' => $string,
+                'name' => [
+                    'first' => $string,
+                    'middle' => $string,
+                    'last' => $string,
+                    'preferred' => $string,
+                    'full' => "$string $string $string",
+                ],
+                'phone' => $string,
+                'email' => "{$string}@gmail.com",
+                'pronouns' => Pronouns::random(),
+            ]
+        )
+    )->assertStatus(
+        status: Http::ACCEPTED,
+    );
+
+    expect(
+        $contact->refresh()
+    )->first_name->toEqual($string);
 })->with('strings');

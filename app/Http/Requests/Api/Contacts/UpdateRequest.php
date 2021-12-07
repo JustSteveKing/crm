@@ -1,30 +1,77 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api\Contacts;
 
+use App\Enums\Pronouns;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
 {
     /**
-     * Determine if the user is authorized to make this request.
-     *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
-     * Get the validation rules that apply to the request.
-     *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
-            //
+            'title' => [
+                'nullable',
+                'string',
+                'max:20',
+            ],
+            'name.first' => [
+                'required',
+                'string',
+                'min:2',
+                'max:82',
+            ],
+            'name.middle' => [
+                'nullable',
+                'string',
+                'min:2',
+                'max:82',
+            ],
+            'name.last' => [
+                'nullable',
+                'string',
+                'min:2',
+                'max:82',
+            ],
+            'name.preferred' => [
+                'nullable',
+                'string',
+                'min:2',
+                'max:82',
+            ],
+            'name.full' => [
+                'required',
+                'string',
+                'min:2',
+                'max:255',
+            ],
+            'phone' => [
+                'nullable',
+                'string',
+            ],
+            'email' => [
+                'nullable',
+                'email:rfc',
+            ],
+            'pronouns' => [
+                'required',
+                'string',
+                Rule::in(values: Pronouns::all()),
+            ]
         ];
     }
 }
