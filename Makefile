@@ -10,6 +10,9 @@ install:
 test:
 	@docker exec crm_php php artisan test
 
+coverage:
+	@docker exec crm_php ./vendor/bin/pest --coverage
+
 migrate:
 	@docker exec crm_php php artisan migrate
 

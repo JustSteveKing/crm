@@ -23,7 +23,7 @@ RUN apt-get clean && apt-get update && apt-get upgrade -y && apt-get install -y 
 ARG INSTALL_PHPREDIS=false
 RUN pecl install -o -f redis \
     &&  rm -rf /tmp/pear \
-    &&  docker-php-ext-enable redis
+    &&  docker-php-ext-enable redis \
 
 RUN docker-php-ext-configure intl
 # PHP Extensions
