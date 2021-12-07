@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Factories;
+namespace Domains\Contacts\Factories;
 
-use App\ValueObjects\ContactValueObject;
+use Domains\Contacts\ValueObjects\ContactValueObject;
 
 final class ContactFactory
 {
     /**
      * @param array<string,string> $attributes
-     * @return ContactValueObject
+     * @return \Domains\Contacts\ValueObjects\ContactValueObject
      */
     public static function make(array $attributes): ContactValueObject
     {

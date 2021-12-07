@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Contacts;
 
-use App\Actions\Contacts\UpdateContact;
-use App\Factories\ContactFactory;
+use Domains\Contacts\Actions\UpdateContact;
+use Domains\Contacts\Aggregates\ContactAggregateRoot;
+use Domains\Contacts\Factories\ContactFactory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Contacts\UpdateRequest;
 use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use JustSteveKing\StatusCode\Http;
 
-class UpdateController extends Controller
+final class UpdateController extends Controller
 {
     /**
      * @param UpdateRequest $request
@@ -25,17 +26,17 @@ class UpdateController extends Controller
             ->where('uuid', $uuid)
             ->firstOrFail();
 
-        $valueObject = ContactFactory::make(
-            attributes: $request->validated(),
-        );
-
-        UpdateContact::handle(
-            contact: $contact,
-            attributes: $valueObject->toArray(),
-        );
+        ContactAggregateRoot::retrieve(
+            uuid: $uuid,
+        )->updateContact(
+            object: ContactFactory::make(
+                attributes: $request->validated(),
+            ),
+            uuid: $uuid,
+        )->persist();
 
         return new JsonResponse(
-            data: $contact->refresh(),
+            data: null,
             status: Http::ACCEPTED,
         );
     }

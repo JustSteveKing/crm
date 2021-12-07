@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\Contacts;
 
-use App\Enums\Pronouns;
+use Domains\Contacts\Enums\Pronouns;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 

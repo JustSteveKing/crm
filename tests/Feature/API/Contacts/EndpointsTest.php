@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Enums\Pronouns;
+use Domains\Contacts\Enums\Pronouns;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Testing\Fluent\AssertableJson;
 use JustSteveKing\StatusCode\Http;
+
+use Spatie\EventSourcing\StoredEvents\Models\EloquentStoredEvent;
 
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
@@ -60,7 +62,9 @@ it('receives a 401 on create when not logged in', function (string $string) {
 
 it('can create a new contact', function (string $string) {
     auth()->login(User::factory()->create());
-    expect(Contact::query()->count())->toEqual(0);
+
+    expect(EloquentStoredEvent::query()->count())->toEqual(0);
+
     postJson(
         uri: route('api:contacts:store'),
         data: [
@@ -77,16 +81,10 @@ it('can create a new contact', function (string $string) {
             'pronouns' => Pronouns::random(),
         ],
     )->assertStatus(
-        status: Http::CREATED,
-    )->assertJson(fn (AssertableJson $json) =>
-        $json
-            ->where('type', 'contact')
-            ->where('attributes.name.first', $string)
-            ->where('attributes.name.last', $string)
-            ->where('attributes.phone', $string)
-            ->etc(),
+        status: Http::ACCEPTED,
     );
-    expect(Contact::query()->count())->toEqual(1);
+
+    expect(EloquentStoredEvent::query()->count())->toEqual(1);
 })->with('strings');
 
 it('can retrieve a contact by UUID', function () {
@@ -133,6 +131,10 @@ it('can update a contact', function (string $string) {
     $contact = Contact::factory()->create();
 
     expect(
+        EloquentStoredEvent::query()->count()
+    )->toEqual(0);
+
+    expect(
         putJson(
             uri: route('api:contacts:update', $contact->uuid),
             data: [
@@ -154,6 +156,32 @@ it('can update a contact', function (string $string) {
     );
 
     expect(
-        $contact->refresh()
-    )->first_name->toEqual($string);
+        EloquentStoredEvent::query()->count()
+    )->toEqual(1);
 })->with('strings');
+
+it('returns a not found status code when trying to update a contact that doesn\'t exist', function (string $uuid) {
+    auth()->login(User::factory()->create());
+
+    expect(
+        putJson(
+            uri: route('api:contacts:update', $uuid),
+            data: [
+                'title' => 'Doctor',
+                'name' => [
+                'first' => $uuid,
+                'middle' => $uuid,
+                'last' => $uuid,
+                'preferred' => $uuid,
+                'full' => "$uuid",
+                ],
+                'phone' => $uuid,
+                'email' => "{$uuid}@gmail.com",
+                'pronouns' => Pronouns::random(),
+            ]
+        )
+    )->assertStatus(
+        status: Http::NOT_FOUND,
+    );
+})->with('uuids');
+

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Rules;
 
-use App\Enums\Pronouns;
+use Domains\Contacts\Enums\Pronouns;
 use Illuminate\Contracts\Validation\Rule;
 
 class PronounRule implements Rule

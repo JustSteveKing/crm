@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Contacts;
+namespace Domains\Contacts\Actions;
 
-use App\Contracts\ValueObjectContract;
+use Infrastructure\Contracts\ValueObjectContract;
 use App\Models\Contact;
 use Illuminate\Database\Eloquent\Model;
 
 final class CreateNewContact
 {
     /**
-     * @param ValueObjectContract $object
+     * @param \Infrastructure\Contracts\ValueObjectContract $object
      * @return Model
      */
     public static function handle(ValueObjectContract $object): Model
