@@ -1,6 +1,7 @@
-include .env
 .RECIPEPREFIX +=
 .DEFAULT_GOAL := help
+PROJECT_NAME=jump
+include .env
 
 help:
 	@echo "Welcome to $(PROJECT_NAME) IT Support, have you tried turning it off and on again?"
