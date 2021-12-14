@@ -20,7 +20,7 @@ seed:
 	@docker exec crm_php php artisan db:seed
 
 analyse:
-	./vendor/bin/phpstan analyse
+	./vendor/bin/phpstan analyse --memory-limit=256m
 
 generate:
 	@docker exec crm_php php artisan ide-helper:models --write
