@@ -8,22 +8,18 @@ use App\Models\Contact;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use JustSteveKing\StatusCode\Http;
-use Spatie\QueryBuilder\QueryBuilder;
 
 class ShowController extends Controller
 {
     /**
      * Handle the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     * @param Contact $contact
      * @return \Illuminate\Http\JsonResponse
      */
-    public function __invoke(Request $request, string $uuid): JsonResponse
+    public function __invoke(Request $request, Contact $contact): JsonResponse
     {
-        $contact = QueryBuilder::for(
-            subject: Contact::class,
-        )->where('uuid', $uuid)->firstOrFail();
-
         return new JsonResponse(
             data: new ContactResource(
                 resource: $contact,

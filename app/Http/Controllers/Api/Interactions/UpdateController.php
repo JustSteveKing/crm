@@ -17,14 +17,12 @@ class UpdateController extends Controller
 {
     /**
      * @param UpdateRequest $request
-     * @param string $uuid
+     * @param Interaction $interaction
      * @return JsonResponse
      */
-    public function __invoke(UpdateRequest $request, string $uuid): JsonResponse
+    public function __invoke(UpdateRequest $request, Interaction $interaction): JsonResponse
     {
-        $interaction = Interaction::query()->where('uuid', $uuid)->firstOrFail();
-
-        $interaction = UpdateInteraction::handle(
+        $updatedInteraction = UpdateInteraction::handle(
             model: $interaction,
             object: InteractionFactory::make(
                 attributes: array_merge(
@@ -36,7 +34,7 @@ class UpdateController extends Controller
 
         return new JsonResponse(
             data: new InteractionResource(
-                resource: $interaction,
+                resource: $updatedInteraction,
             ),
             status: Http::ACCEPTED,
         );

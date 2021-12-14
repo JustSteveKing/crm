@@ -15,13 +15,11 @@ class ShowController extends Controller
 {
     /**
      * @param Request $request
-     * @param string $uuid
+     * @param Interaction $interaction
      * @return JsonResponse
      */
-    public function __invoke(Request $request, string $uuid): JsonResponse
+    public function __invoke(Request $request, Interaction $interaction): JsonResponse
     {
-        $interaction = Interaction::query()->where('uuid', $uuid)->firstOrFail();
-
         return new JsonResponse(
             data: new InteractionResource(
                 resource: $interaction,

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Contacts;
 
-use Domains\Contacts\Actions\UpdateContact;
 use Domains\Contacts\Aggregates\ContactAggregateRoot;
 use Domains\Contacts\Factories\ContactFactory;
 use App\Http\Controllers\Controller;
@@ -17,22 +16,18 @@ final class UpdateController extends Controller
 {
     /**
      * @param UpdateRequest $request
-     * @param string $uuid
+     * @param Contact $contact
      * @return JsonResponse
      */
-    public function __invoke(UpdateRequest $request, string $uuid): JsonResponse
+    public function __invoke(UpdateRequest $request, Contact $contact): JsonResponse
     {
-        $contact = Contact::query()
-            ->where('uuid', $uuid)
-            ->firstOrFail();
-
         ContactAggregateRoot::retrieve(
-            uuid: $uuid,
+            uuid: $contact->uuid,
         )->updateContact(
             object: ContactFactory::make(
                 attributes: $request->validated(),
             ),
-            uuid: $uuid,
+            uuid: $contact->uuid,
         )->persist();
 
         return new JsonResponse(
