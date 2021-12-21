@@ -11,6 +11,7 @@ use JustSteveKing\StatusCode\Http;
 
 use Spatie\EventSourcing\StoredEvents\Models\EloquentStoredEvent;
 
+use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
@@ -186,3 +187,18 @@ it('returns a not found status code when trying to update a contact that doesn\'
     );
 })->with('uuids');
 
+it('can delete a contact', function () {
+    auth()->login(User::factory()->create());
+
+    $contact = Contact::factory()->Create();
+
+    expect(Contact::query()->count())->toEqual(1);
+
+    deleteJson(
+        uri: route('api:contacts:delete', $contact->uuid),
+    )->assertStatus(
+        status: Http::ACCEPTED,
+    );
+
+    expect(Contact::query()->count())->toEqual(0);
+});

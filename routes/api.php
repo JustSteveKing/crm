@@ -19,6 +19,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('/', App\Http\Controllers\Api\Contacts\StoreController::class)->name('store');
         Route::get('{uuid}', App\Http\Controllers\Api\Contacts\ShowController::class)->name('show');
         Route::put('{uuid}', App\Http\Controllers\Api\Contacts\UpdateController::class)->name('update');
+        Route::delete('{uuid}', App\Http\Controllers\Api\Contacts\DeleteController::class)->name('delete');
     });
 
     Route::prefix('interactions')->as('interactions:')->group(function () {
