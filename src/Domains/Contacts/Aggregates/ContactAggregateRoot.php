@@ -7,10 +7,20 @@ namespace Domains\Contacts\Aggregates;
 use Domains\Contacts\Events\ContactWasCreated;
 use Domains\Contacts\Events\ContactWasUpdated;
 use Domains\Contacts\ValueObjects\ContactValueObject;
+use Domains\Contacts\Repositories\ContactStoredEventsRepository;
 use Spatie\EventSourcing\AggregateRoots\AggregateRoot;
+use Spatie\EventSourcing\StoredEvents\Repositories\StoredEventRepository;
 
 final class ContactAggregateRoot extends AggregateRoot
 {
+    /**
+     * @return StoredEventRepository
+     */
+    protected function getStoredEventRepository(): StoredEventRepository
+    {
+        return app(ContactStoredEventsRepository::class);
+    }
+
     /**
      * @param ContactValueObject $object
      * @return $this

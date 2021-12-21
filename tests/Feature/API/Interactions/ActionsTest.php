@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Interaction;
 use App\Models\User;
 use Domains\Interactions\Actions\CreateInteraction;
+use Domains\Interactions\Actions\DeleteInteraction;
 use Domains\Interactions\Actions\UpdateInteraction;
 use Domains\Interactions\Factories\InteractionFactory;
 
@@ -29,7 +30,7 @@ it('can update an interaction', function (string $string) {
     $interaction = Interaction::factory()->create();
 
     UpdateInteraction::handle(
-        model: $interaction,
+        interaction: $interaction->uuid,
         object: InteractionFactory::make(
             attributes: [
                 'type' => $interaction->type->value,
@@ -42,3 +43,15 @@ it('can update an interaction', function (string $string) {
 
     expect($interaction->refresh())->content->toEqual($string);
 })->with('strings');
+
+it('can delete an interaction', function () {
+    $interaction = Interaction::factory()->create();
+
+    expect(Interaction::query()->count())->toEqual(1);
+
+    DeleteInteraction::handle(
+        uuid: $interaction->uuid,
+    );
+
+    expect(Interaction::query()->count())->toEqual(0);
+});

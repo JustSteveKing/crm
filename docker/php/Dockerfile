@@ -36,4 +36,4 @@ RUN docker-php-ext-install \
 
 # Install Composer from Official Docker Image
 # https://hub.docker.com/_/composer
-COPY --from=composer:2.1.3 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer

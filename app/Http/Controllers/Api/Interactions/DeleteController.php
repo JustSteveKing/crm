@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Api\Interactions;
 
 use App\Http\Controllers\Controller;
 use App\Models\Interaction;
+use Domains\Interactions\Aggregates\InteractionAggregate;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use JustSteveKing\StatusCode\Http;
@@ -14,9 +15,13 @@ class DeleteController extends Controller
 {
     public function __invoke(Request $request, string $uuid): JsonResponse
     {
-        $interaction = Interaction::query()->where('uuid', $uuid)->firstOrFail();
+        Interaction::query()->where('uuid', $uuid)->firstOrFail();
 
-        $interaction->delete();
+        InteractionAggregate::retrieve(
+            uuid: $uuid,
+        )->deleteInteraction(
+            interaction: $uuid,
+        )->persist();
 
         return new JsonResponse(
             data: null,
