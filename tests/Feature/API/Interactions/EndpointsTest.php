@@ -9,6 +9,7 @@ use Domains\Interactions\Enums\InteractionType;
 use Illuminate\Testing\Fluent\AssertableJson;
 use JustSteveKing\StatusCode\Http;
 
+use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
@@ -103,3 +104,28 @@ it('can update a interaction', function (string $string) {
     );
 
 })->with('strings');
+
+it('can delete an interaction', function () {
+    auth()->login(User::factory()->create());
+    $interaction = Interaction::factory()->create();
+
+    expect(Interaction::query()->count())->toEqual(1);
+
+    deleteJson(
+        uri: route('api:interactions:delete', $interaction->uuid),
+    )->assertStatus(
+        status: Http::ACCEPTED,
+    );
+
+    expect(Interaction::query()->count())->toEqual(0);
+});
+
+it('gets a Not Found status when interaction does not exist', function (string $uuid) {
+    auth()->login(User::factory()->create());
+
+    deleteJson(
+        uri: route('api:interactions:delete', $uuid),
+    )->assertStatus(
+        status: Http::NOT_FOUND,
+    );
+})->with('uuids');
