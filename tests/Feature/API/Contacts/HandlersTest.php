@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\Contact;
 use Domains\Contacts\Enums\Pronouns;
 use Domains\Contacts\Events\ContactWasCreated;
+use Domains\Contacts\Events\ContactWasDeleted;
 use Domains\Contacts\Events\ContactWasUpdated;
 use Domains\Contacts\Factories\ContactFactory;
 use Domains\Contacts\Handlers\ContactHandler;
@@ -80,3 +81,19 @@ it('can update a contact', function (string $string) {
         $contact->refresh(),
     )->phone->toEqual($string);
 })->with('strings');
+
+it('can delete a contact', function () {
+    $contact = Contact::factory()->create();
+
+    $event = new ContactWasDeleted(
+        contact: $contact->uuid,
+    );
+
+    (new ContactHandler())->onContactWasDeleted(
+        event: $event,
+    );
+
+    expect(
+        Contact::query()->count()
+    )->toEqual(0);
+});

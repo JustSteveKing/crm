@@ -192,7 +192,7 @@ it('can delete a contact', function () {
 
     $contact = Contact::factory()->Create();
 
-    expect(Contact::query()->count())->toEqual(1);
+    expect(ContactStoredEvent::query()->count())->toEqual(0);
 
     deleteJson(
         uri: route('api:contacts:delete', $contact->uuid),
@@ -200,5 +200,5 @@ it('can delete a contact', function () {
         status: Http::ACCEPTED,
     );
 
-    expect(Contact::query()->count())->toEqual(0);
+    expect(ContactStoredEvent::query()->count())->toEqual(1);
 });
