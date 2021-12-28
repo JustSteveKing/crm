@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\ContactStoredEvent;
 use Domains\Contacts\Enums\Pronouns;
 use App\Models\Contact;
 use App\Models\User;
@@ -10,6 +11,7 @@ use JustSteveKing\StatusCode\Http;
 
 use Spatie\EventSourcing\StoredEvents\Models\EloquentStoredEvent;
 
+use function Pest\Laravel\deleteJson;
 use function Pest\Laravel\getJson;
 use function Pest\Laravel\postJson;
 use function Pest\Laravel\putJson;
@@ -63,7 +65,7 @@ it('receives a 401 on create when not logged in', function (string $string) {
 it('can create a new contact', function (string $string) {
     auth()->login(User::factory()->create());
 
-    expect(EloquentStoredEvent::query()->count())->toEqual(0);
+    expect(ContactStoredEvent::query()->count())->toEqual(0);
 
     postJson(
         uri: route('api:contacts:store'),
@@ -84,7 +86,7 @@ it('can create a new contact', function (string $string) {
         status: Http::ACCEPTED,
     );
 
-    expect(EloquentStoredEvent::query()->count())->toEqual(1);
+    expect(ContactStoredEvent::query()->count())->toEqual(1);
 })->with('strings');
 
 it('can retrieve a contact by UUID', function () {
@@ -131,7 +133,7 @@ it('can update a contact', function (string $string) {
     $contact = Contact::factory()->create();
 
     expect(
-        EloquentStoredEvent::query()->count()
+        ContactStoredEvent::query()->count()
     )->toEqual(0);
 
     expect(
@@ -156,7 +158,7 @@ it('can update a contact', function (string $string) {
     );
 
     expect(
-        EloquentStoredEvent::query()->count()
+        ContactStoredEvent::query()->count()
     )->toEqual(1);
 })->with('strings');
 
@@ -185,3 +187,18 @@ it('returns a not found status code when trying to update a contact that doesn\'
     );
 })->with('uuids');
 
+it('can delete a contact', function () {
+    auth()->login(User::factory()->create());
+
+    $contact = Contact::factory()->Create();
+
+    expect(ContactStoredEvent::query()->count())->toEqual(0);
+
+    deleteJson(
+        uri: route('api:contacts:delete', $contact->uuid),
+    )->assertStatus(
+        status: Http::ACCEPTED,
+    );
+
+    expect(ContactStoredEvent::query()->count())->toEqual(1);
+});

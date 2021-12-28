@@ -10,7 +10,7 @@ install:
 	@composer install
 
 test:
-	@docker exec $(PROJECT_NAME)_php php artisan test
+	@docker exec $(PROJECT_NAME)_php ./vendor/bin/pest --parallel
 
 coverage:
 	@docker exec $(PROJECT_NAME)_php ./vendor/bin/pest --coverage
@@ -21,8 +21,11 @@ migrate:
 seed:
 	@docker exec $(PROJECT_NAME)_php php artisan db:seed
 
+fresh:
+	@docker exec crm_php php artisan migrate:fresh
+
 analyse:
-	./vendor/bin/phpstan analyse
+	./vendor/bin/phpstan analyse --memory-limit=256m
 
 generate:
 	@docker exec $(PROJECT_NAME)_php php artisan ide-helper:models --write

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Contact;
 use Domains\Contacts\Actions\CreateNewContact;
+use Domains\Contacts\Actions\DeleteContact;
 use Domains\Contacts\Actions\UpdateContact;
 use Domains\Contacts\Enums\Pronouns;
 use Domains\Contacts\Exceptions\ContactUpdateException;
@@ -74,3 +75,13 @@ it('throws an exception when trying to update a contact that does not exist', fu
         ]
     );
 })->with('uuids')->throws(ContactUpdateException::class);
+
+it('can delete a contact', function () {
+    $contact = Contact::factory()->create();
+
+    DeleteContact::handle(
+        contact: $contact->uuid,
+    );
+
+    expect(Contact::query()->count())->toEqual(0);
+});

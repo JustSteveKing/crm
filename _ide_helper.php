@@ -3,7 +3,7 @@
 
 /**
  * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 8.75.0.
+ * Generated for Laravel 8.77.0.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -4309,6 +4309,102 @@
         public static function flushMacros()
         {
                         \Illuminate\Cookie\CookieJar::flushMacros();
+        }
+         
+    }
+            /**
+     * 
+     *
+     * @see \Illuminate\Encryption\Encrypter
+     */ 
+        class Crypt {
+                    /**
+         * Determine if the given key and cipher combination is valid.
+         *
+         * @param string $key
+         * @param string $cipher
+         * @return bool 
+         * @static 
+         */ 
+        public static function supported($key, $cipher)
+        {
+                        return \Illuminate\Encryption\Encrypter::supported($key, $cipher);
+        }
+                    /**
+         * Create a new encryption key for the given cipher.
+         *
+         * @param string $cipher
+         * @return string 
+         * @static 
+         */ 
+        public static function generateKey($cipher)
+        {
+                        return \Illuminate\Encryption\Encrypter::generateKey($cipher);
+        }
+                    /**
+         * Encrypt the given value.
+         *
+         * @param mixed $value
+         * @param bool $serialize
+         * @return string 
+         * @throws \Illuminate\Contracts\Encryption\EncryptException
+         * @static 
+         */ 
+        public static function encrypt($value, $serialize = true)
+        {
+                        /** @var \Illuminate\Encryption\Encrypter $instance */
+                        return $instance->encrypt($value, $serialize);
+        }
+                    /**
+         * Encrypt a string without serialization.
+         *
+         * @param string $value
+         * @return string 
+         * @throws \Illuminate\Contracts\Encryption\EncryptException
+         * @static 
+         */ 
+        public static function encryptString($value)
+        {
+                        /** @var \Illuminate\Encryption\Encrypter $instance */
+                        return $instance->encryptString($value);
+        }
+                    /**
+         * Decrypt the given value.
+         *
+         * @param string $payload
+         * @param bool $unserialize
+         * @return mixed 
+         * @throws \Illuminate\Contracts\Encryption\DecryptException
+         * @static 
+         */ 
+        public static function decrypt($payload, $unserialize = true)
+        {
+                        /** @var \Illuminate\Encryption\Encrypter $instance */
+                        return $instance->decrypt($payload, $unserialize);
+        }
+                    /**
+         * Decrypt the given string without unserialization.
+         *
+         * @param string $payload
+         * @return string 
+         * @throws \Illuminate\Contracts\Encryption\DecryptException
+         * @static 
+         */ 
+        public static function decryptString($payload)
+        {
+                        /** @var \Illuminate\Encryption\Encrypter $instance */
+                        return $instance->decryptString($payload);
+        }
+                    /**
+         * Get the encryption key.
+         *
+         * @return string 
+         * @static 
+         */ 
+        public static function getKey()
+        {
+                        /** @var \Illuminate\Encryption\Encrypter $instance */
+                        return $instance->getKey();
         }
          
     }
@@ -11223,6 +11319,20 @@
                         return $instance->boolean($key, $default);
         }
                     /**
+         * Retrieve input from the request as a Carbon instance.
+         *
+         * @param string $key
+         * @param string|null $format
+         * @param string|null $tz
+         * @return \Illuminate\Support\Carbon|null 
+         * @static 
+         */ 
+        public static function date($key, $format = null, $tz = null)
+        {
+                        /** @var \Illuminate\Http\Request $instance */
+                        return $instance->date($key, $format, $tz);
+        }
+                    /**
          * Retrieve input from the request as a collection.
          *
          * @param array|string|null $key
@@ -11348,7 +11458,7 @@
                     /**
          * Dump the request items and end the script.
          *
-         * @param array|mixed $keys
+         * @param mixed $keys
          * @return void 
          * @static 
          */ 
@@ -11360,7 +11470,7 @@
                     /**
          * Dump the items.
          *
-         * @param array $keys
+         * @param mixed $keys
          * @return \Illuminate\Http\Request 
          * @static 
          */ 
@@ -13797,6 +13907,18 @@
                         return $instance->extend($driver, $callback);
         }
                     /**
+         * Set the application instance used by the manager.
+         *
+         * @param \Illuminate\Contracts\Foundation\Application $app
+         * @return \Illuminate\Filesystem\FilesystemManager 
+         * @static 
+         */ 
+        public static function setApplication($app)
+        {
+                        /** @var \Illuminate\Filesystem\FilesystemManager $instance */
+                        return $instance->setApplication($app);
+        }
+                    /**
          * Assert that the given file exists.
          *
          * @param string|array $path
@@ -14238,6 +14360,18 @@
         {
                         /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
                         return $instance->getDriver();
+        }
+                    /**
+         * Define a custom temporary URL builder callback.
+         *
+         * @param \Closure $callback
+         * @return void 
+         * @static 
+         */ 
+        public static function buildTemporaryUrlsUsing($callback)
+        {
+                        /** @var \Illuminate\Filesystem\FilesystemAdapter $instance */
+                        $instance->buildTemporaryUrlsUsing($callback);
         }
                     /**
          * Register a custom macro.
@@ -15034,6 +15168,21 @@
         {
                         /** @var \Illuminate\View\Factory $instance */
                         return $instance->renderWhen($condition, $view, $data, $mergeData);
+        }
+                    /**
+         * Get the rendered content of the view based on the negation of a given condition.
+         *
+         * @param bool $condition
+         * @param string $view
+         * @param \Illuminate\Contracts\Support\Arrayable|array $data
+         * @param array $mergeData
+         * @return string 
+         * @static 
+         */ 
+        public static function renderUnless($condition, $view, $data = [], $mergeData = [])
+        {
+                        /** @var \Illuminate\View\Factory $instance */
+                        return $instance->renderUnless($condition, $view, $data, $mergeData);
         }
                     /**
          * Get the rendered contents of a partial from a loop.
@@ -16552,6 +16701,7 @@ namespace  {
             class Cache extends \Illuminate\Support\Facades\Cache {}
             class Config extends \Illuminate\Support\Facades\Config {}
             class Cookie extends \Illuminate\Support\Facades\Cookie {}
+            class Crypt extends \Illuminate\Support\Facades\Crypt {}
             class Date extends \Illuminate\Support\Facades\Date {}
             class DB extends \Illuminate\Support\Facades\DB {}
             class Eloquent extends \Illuminate\Database\Eloquent\Model {             
@@ -17791,18 +17941,6 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Eloquent\Builder $instance */
                                 return $instance->mergeConstraintsFrom($from);
-            }
-             
-                /**
-             * Explains the query.
-             *
-             * @return \Illuminate\Support\Collection 
-             * @static 
-             */ 
-            public static function explain()
-            {
-                                /** @var \Illuminate\Database\Eloquent\Builder $instance */
-                                return $instance->explain();
             }
              
                 /**
@@ -19909,6 +20047,18 @@ namespace  {
             {
                                 /** @var \Illuminate\Database\Query\Builder $instance */
                                 return $instance->dd();
+            }
+             
+                /**
+             * Explains the query.
+             *
+             * @return \Illuminate\Support\Collection 
+             * @static 
+             */ 
+            public static function explain()
+            {
+                                /** @var \Illuminate\Database\Query\Builder $instance */
+                                return $instance->explain();
             }
              
                 /**
